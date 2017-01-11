@@ -24,7 +24,7 @@ double time = 0.0; // Initialise time!
 // Initialise Various Types for Finite element Calculations
 
 typedef Dune::PDELab::OverlappingConformingDirichletConstraints CON;
-typedef Dune::PDELab::ISTLVectorBackend<> VBE;
+ typedef Dune::PDELab::istl::VectorBackend<> VBE;
 
 typedef Dune::PDELab::GridFunctionSpace<GV, FEM_P1, CON, VBE> P1_GFS; // Piecewise Linear Grid Function Space
 typedef Dune::PDELab::GridFunctionSpace<GV, FEM_P2, CON, VBE> P2_GFS; // Piecewise Quadratic Grid Function Space
@@ -124,9 +124,9 @@ typedef typename GFS::template ConstraintsContainer<double>::Type C;
       std::cout << "Initial Solution & Mesh written to : " << file_output_name << ".vtk" << std::endl;
 
     }
-
-    typedef Dune::PDELab::ISTLBackend_SEQ_UMFPack LS;
-      LS ls(10,false); // Note that first argument is 'Max Iterations' which does not apply for direct solver and is ignored
+    typedef Dune::PDELab::ISTLBackend_SEQ_CG_AMG_SSOR<IGO> LS;
+    // typedef Dune::PDELab::ISTLBackend_SEQ_UMFPack LS;
+      LS ls(100,false); // Note that first argument is 'Max Iterations' which does not apply for direct solver and is ignored
 
     // <<<6>>> Solver for non-linear problem per stage
     typedef Dune::PDELab::Newton<IGO,LS,V> PDESOLVER;
